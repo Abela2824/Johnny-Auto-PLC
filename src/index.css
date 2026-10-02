@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Outfit", "Plus Jakarta Sans", sans-serif;
+  --color-brand-blue: #0F2C59;
+  --color-brand-blue-dark: #0A1E3D;
+  --color-brand-blue-light: #18417D;
+  --color-brand-blue-subtle: #EEF4FA;
+  --color-brand-red: #D9232D;
+  --color-brand-red-dark: #B51B24;
+  --color-brand-red-subtle: #FEF0F1;
+  --color-brand-charcoal: #0B1320;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    color: #1E293B;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+

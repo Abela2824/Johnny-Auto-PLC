@@ -1,0 +1,7 @@
+{
+  "name": "Johnny Auto | Car Maintenance & Automotive Services in Addis Ababa",
+  "description": "Johnny Auto provides automotive maintenance, body repair, diagnostics, painting and complete vehicle services in Addis Ababa, Ethiopia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
