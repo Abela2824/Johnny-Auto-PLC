@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play, Pause, WifiLow } from 'lucide-react';
 import { PageId } from '../types';
 
 interface HeroVideoProps {
@@ -10,55 +10,141 @@ interface HeroVideoProps {
 
 export const HeroVideo: React.FC<HeroVideoProps> = ({ onNavigate }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isLowData, setIsLowData] = useState(false);
+  const [videoSrc, setVideoSrc] = useState('/herosection.mp4');
   const prefersReducedMotion = useReducedMotion();
 
+  // Network & viewport awareness for low data connection optimization
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay policy prevented playback, fall back gracefully to poster
-        setVideoLoaded(false);
-      });
-    }
+    const nav = navigator as unknown as {
+      connection?: {
+        saveData?: boolean;
+        effectiveType?: string;
+      };
+    };
+
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const isSaveData = nav.connection?.saveData === true;
+    const isSlowConnection = ['slow-2g', '2g', '3g'].includes(
+      nav.connection?.effectiveType || ''
+    );
+
+    const lowDataActive = isMobile || isSaveData || isSlowConnection;
+    setIsLowData(lowDataActive);
+
+    // Pick lightweight ~997KB stream for mobile/low-bandwidth, or 1.9MB optimized HD for broadband
+    setVideoSrc(lowDataActive ? '/herosection-mobile.mp4' : '/herosection.mp4');
   }, []);
+
+  // Safe playback trigger
+  useEffect(() => {
+    if (prefersReducedMotion || videoError) return;
+
+    if (videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(() => {
+            // Autoplay blocked by browser policy; poster image remains gracefully visible
+            setIsPlaying(false);
+            setVideoLoaded(false);
+          });
+      }
+    }
+  }, [videoSrc, prefersReducedMotion, videoError]);
+
+  const togglePlayback = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
+    }
+  };
 
   return (
     <section className="relative w-full min-h-screen flex items-center bg-black text-white overflow-hidden">
-      {/* Background Media Container - Crystal clear video playback with NO blue tint */}
+      {/* Background Media Container */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Fallback & Poster Image (Extracted directly from user's herosection.mp4) */}
-        <img
-          src="/hero-poster.jpg"
-          alt="Johnny Auto workshop vehicle maintenance and collision repair facility"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-            videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'
-          }`}
-          loading="eager"
-        />
+        {/* Instant Hero Image Layer: Always visible from 0ms so there is never a blank screen while video loads */}
+        <picture className="absolute inset-0 w-full h-full block">
+          <source srcSet="/hero-poster.webp" type="image/webp" />
+          <img
+            src="/hero-poster.jpg"
+            alt="Johnny Auto workshop vehicle maintenance and collision repair facility"
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
 
-        {/* Video Player using uploaded herosection.mp4 at full 100% opacity */}
-        {!videoError && (
+        {/* Optimized Video Player: Fades in smoothly once moving frames begin playing */}
+        {!prefersReducedMotion && !videoError && (
           <video
             ref={videoRef}
+            key={videoSrc}
             autoPlay
             muted
             loop
             playsInline
-            poster="/hero-poster.jpg"
-            onLoadedData={() => setVideoLoaded(true)}
-            onError={() => setVideoError(true)}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            preload={isLowData ? 'metadata' : 'auto'}
+            poster="/hero-poster.webp"
+            onPlaying={() => {
+              setVideoLoaded(true);
+              setIsPlaying(true);
+            }}
+            onPause={() => setIsPlaying(false)}
+            onError={() => {
+              // Gracefully fall back to the high-res poster image
+              setVideoError(true);
+              setVideoLoaded(false);
+            }}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
               videoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <source src="/herosection.mp4" type="video/mp4" />
+            <source src={videoSrc} type="video/mp4" />
           </video>
         )}
 
-        {/* Subtle, neutral dark gradient strictly behind text so video is seen perfectly without any blue tint */}
+        {/* Subtle, neutral dark gradient strictly behind text so video is seen clearly without tint */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
+
+        {/* Minimal video control button for low-data control and user accessibility */}
+        {!prefersReducedMotion && !videoError && videoLoaded && (
+          <div className="absolute bottom-6 right-6 z-20 flex items-center gap-2">
+            {isLowData && (
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium tracking-wide uppercase text-slate-300 bg-black/60 backdrop-blur-md border border-white/10 rounded-none">
+                <WifiLow className="w-3 h-3 text-[#D9232D]" />
+                Low-Data Mode
+              </span>
+            )}
+            <button
+              onClick={togglePlayback}
+              aria-label={isPlaying ? 'Pause background video' : 'Play background video'}
+              title={isPlaying ? 'Pause background video' : 'Play background video'}
+              className="p-2.5 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white transition-all duration-200 hover:scale-105"
+            >
+              {isPlaying ? (
+                <Pause className="w-4 h-4 text-white" />
+              ) : (
+                <Play className="w-4 h-4 text-white fill-white" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Hero Foreground Content */}
