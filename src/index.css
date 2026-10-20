@@ -1,27 +1,173 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   THE LINE — design tokens
+   Red = what we have done (heat, metal, 25 years). Blue = where we are going.
+--------------------------------------------------------------------------- */
 @theme {
-  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Outfit", "Plus Jakarta Sans", sans-serif;
-  --color-brand-blue: #0F2C59;
-  --color-brand-blue-dark: #0A1E3D;
-  --color-brand-blue-light: #18417D;
-  --color-brand-blue-subtle: #EEF4FA;
-  --color-brand-red: #D9232D;
-  --color-brand-red-dark: #B51B24;
-  --color-brand-red-subtle: #FEF0F1;
-  --color-brand-charcoal: #0B1320;
+  --font-sans: "Archivo", "Noto Sans Ethiopic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Archivo", "Noto Sans Ethiopic", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, "Noto Sans Ethiopic", monospace;
+
+  --color-ink: #0A0C10;
+  --color-ink-2: #11151C;
+  --color-ink-3: #181D26;
+  --color-steel: #2A303A;
+  --color-steel-2: #3B4452;
+  --color-mist: #9AA3B2;
+  --color-mist-2: #C5CBD6;
+  --color-bone: #F2EEE6;
+  --color-bone-2: #E6E0D4;
+  --color-bone-3: #D8D0C0;
+  --color-red: #E2342D;
+  --color-red-2: #B8231D;
+  --color-red-3: #FF6B62;
+  --color-volt: #2F6BFF;
+  --color-volt-2: #5CE1FF;
+  --color-volt-3: #1B3FA8;
+  --color-ok: #3DDC97;
+  --color-warn: #FFB020;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 4px;
 }
 
 @layer base {
+  :root {
+    color-scheme: dark;
+    --accent: var(--color-red);
+    --accent-2: var(--color-red-3);
+  }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     font-family: var(--font-sans);
-    color: #1E293B;
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-feature-settings: "ss01", "cv05";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    letter-spacing: -0.02em;
-  }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  :lang(am) h1, :lang(am) h2, :lang(am) h3 { letter-spacing: 0; line-height: 1.25; font-variation-settings: "wdth" 100; }
+  :lang(am) { line-height: 1.7; }
+  ::selection { background: var(--color-red); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-volt-2); outline-offset: 3px; border-radius: 2px; }
+  button, [role="button"] { cursor: pointer; }
+  img { max-width: 100%; height: auto; }
+  input, select, textarea { font: inherit; color: inherit; }
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .7; }
+  [hidden] { display: none !important; }
 }
 
+/* Width axis of Archivo: condensed headlines, expanded labels. */
+@utility wdth-62 { font-variation-settings: "wdth" 62; }
+@utility wdth-75 { font-variation-settings: "wdth" 75; }
+@utility wdth-87 { font-variation-settings: "wdth" 87; }
+@utility wdth-100 { font-variation-settings: "wdth" 100; }
+@utility wdth-112 { font-variation-settings: "wdth" 112; }
+@utility wdth-125 { font-variation-settings: "wdth" 125; }
+
+@utility wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1rem; }
+@media (min-width: 640px) { .wrap { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .wrap { padding-inline: 2.5rem; } }
+
+/* Eyebrow label: mono, tracked, with a leading hairline */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.eyebrow::before { content: ""; width: 1.5rem; height: 1px; background: var(--accent); }
+
+/* Hairline that is "the line" */
+@utility line-h { height: 1px; background: linear-gradient(90deg, var(--color-red), var(--color-volt) 100%); }
+@utility hairline { border-color: color-mix(in oklab, var(--color-bone) 12%, transparent); }
+
+/* Duotone image treatment: dark base, screen the photo, tint the highlights. */
+.duo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #141a26;
+}
+.duo > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08) brightness(.92);
+  mix-blend-mode: screen;
+  opacity: .88;
+  transition: filter .7s var(--ease-expo), opacity .7s var(--ease-expo);
+}
+.duo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--duo-tint, var(--color-red));
+  mix-blend-mode: multiply;
+  opacity: .42;
+  pointer-events: none;
+  transition: opacity .7s var(--ease-expo);
+}
+.duo-blue { --duo-tint: var(--color-volt); }
+.duo-steel { --duo-tint: #5a6b8c; }
+.duo-reveal:hover > img, .duo-reveal:focus-within > img, .duo.is-color > img { filter: none; mix-blend-mode: normal; opacity: 1; }
+.duo-reveal:hover::after, .duo-reveal:focus-within::after, .duo.is-color::after { opacity: 0; }
+
+/* Grain overlay (single fixed element in App) */
+.grain {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background-image: url("/noise.png"); background-size: 160px 160px;
+  opacity: .06; mix-blend-mode: overlay;
+}
+
+/* Hero car: draw the wireframe, then paint it front to back. */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes wipe { to { clip-path: inset(-5% -2% -5% 0); } }
+@keyframes spray { 0% { opacity: 0; transform: translateX(0); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(var(--spray-x, 800px)); } }
+.hero-car .stroke { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.7s var(--ease-expo) forwards; }
+.hero-car .stroke.d2 { animation-delay: .25s; }
+.hero-car .stroke.d3 { animation-delay: .5s; }
+.hero-car .fill { clip-path: inset(-5% 102% -5% 0); animation: wipe 1.3s 1.5s var(--ease-expo) forwards; }
+.hero-car .spray { opacity: 0; animation: spray 1.3s 1.5s var(--ease-expo) forwards; }
+.hero-car .after { opacity: 0; animation: fadein .6s 2.6s forwards; }
+@keyframes fadein { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-car .stroke, .hero-car .fill, .hero-car .after { animation: none; stroke-dashoffset: 0; clip-path: none; opacity: 1; }
+  .hero-car .spray { display: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Battery cells in the Future section */
+@keyframes cell { to { opacity: 1; } }
+.ev-cells.is-on .cell { animation: cell .35s var(--ease-expo) forwards; }
+@media (prefers-reduced-motion: reduce) { .ev-cells .cell { opacity: 1 !important; animation: none; } }
+
+/* Scroll-driven marquee-free status strip ticks */
+@keyframes blink { 50% { opacity: .25; } }
+.blink { animation: blink 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
+
+/* Compare slider */
+.compare { touch-action: pan-y; }
+.compare input[type="range"] { -webkit-appearance: none; appearance: none; background: transparent; }
+.compare input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 44px; height: 44px; border-radius: 999px; background: transparent; cursor: ew-resize; }
+.compare input[type="range"]::-moz-range-thumb { width: 44px; height: 44px; border-radius: 999px; background: transparent; border: 0; cursor: ew-resize; }
+
+/* Hide scrollbar for chip rows */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Outlined display text */
+.text-outline { -webkit-text-stroke: 1px color-mix(in oklab, var(--color-bone) 45%, transparent); color: transparent; }
+
+/* Skip link */
+.skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background: var(--color-bone); color: var(--color-ink); padding: .5rem .75rem; border-radius: 4px; font-weight: 700; }
+.skip-link:focus { top: 1rem; }

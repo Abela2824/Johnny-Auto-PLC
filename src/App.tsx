@@ -1,154 +1,79 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState, useEffect } from 'react';
-import { PageId, GalleryItem } from './types';
+import { lazy, Suspense } from 'react';
+import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
+import { I18nProvider } from './i18n';
+import { RouterProvider, matchPath, useRoute } from './lib/router';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { Lightbox } from './components/Lightbox';
-import { QuoteModal } from './components/QuoteModal';
-import { LegalModal, LegalDocType } from './components/LegalModal';
-import { HomePage } from './pages/HomePage';
-import { AboutPage } from './pages/AboutPage';
-import { ServicesPage } from './pages/ServicesPage';
-import { WhyUsPage } from './pages/WhyUsPage';
-import { GalleryPage } from './pages/GalleryPage';
-import { FutureProjectPage } from './pages/FutureProjectPage';
-import { ContactPage } from './pages/ContactPage';
-import { GALLERY_ITEMS } from './data/companyData';
+import { MobileBar } from './components/MobileBar';
+import Home from './pages/Home';
+
+// Service tools are code-split so the marketing page stays light.
+const Book = lazy(() => import('./pages/Book'));
+const Quote = lazy(() => import('./pages/Quote'));
+const Track = lazy(() => import('./pages/Track'));
+const Admin = lazy(() => import('./pages/Admin'));
+const FleetPortal = lazy(() => import('./pages/FleetPortal'));
+const NotesPage = lazy(() => import('./pages/NotesPage'));
+
+function Fallback() {
+  return (
+    <div className="wrap py-32 text-mist font-mono text-sm" role="status" aria-live="polite">Loading…</div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="wrap py-32">
+      <span className="eyebrow">404</span>
+      <h1 className="mt-4 font-display font-extrabold wdth-75 text-5xl">That page is not on the line.</h1>
+      <p className="mt-4 text-mist-2"><a className="underline" href="/">Back to the workshop</a></p>
+    </div>
+  );
+}
+
+function Routes() {
+  const r = useRoute();
+  if (r.path === '/') return <Home />;
+  if (r.path === '/book') return <Book />;
+  if (r.path === '/quote') return <Quote />;
+  if (r.path === '/track') return <Track />;
+  if (r.path === '/admin') return <Admin />;
+  if (r.path === '/fleet') return <FleetPortal />;
+  if (r.path === '/notes') return <NotesPage />;
+  const n = matchPath('/notes/:slug', r.path);
+  if (n) return <NotesPage slug={n.slug} />;
+  return <NotFound />;
+}
+
+function Shell() {
+  const r = useRoute();
+  const isHome = r.path === '/';
+  return (
+    <div className="min-h-screen flex flex-col bg-ink text-bone">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <Header transparent={isHome} />
+      <main id="main" className="flex-1">
+        <Suspense fallback={<Fallback />}>
+          <Routes />
+        </Suspense>
+      </main>
+      <Footer />
+      <MobileBar />
+      <div className="grain" aria-hidden="true" />
+    </div>
+  );
+}
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageId>('home');
-  const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
-  const [isQuoteOpen, setIsQuoteOpen] = useState<boolean>(false);
-  const [preselectedService, setPreselectedService] = useState<string | undefined>(undefined);
-  const [legalDocType, setLegalDocType] = useState<LegalDocType | null>(null);
-
-  // Synchronize with URL hash for easy bookmarking and browser back/forward buttons
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') as PageId;
-      const validPages: PageId[] = [
-        'home',
-        'about',
-        'services',
-        'why-us',
-        'gallery',
-        'future-project',
-        'contact',
-      ];
-      if (validPages.includes(hash)) {
-        setCurrentPage(hash);
-      }
-    };
-
-    if (window.location.hash) {
-      handleHashChange();
-    }
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  const handleNavigate = (page: PageId) => {
-    setCurrentPage(page);
-    window.location.hash = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleOpenQuote = (serviceTitle?: string) => {
-    setPreselectedService(serviceTitle);
-    setIsQuoteOpen(true);
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-[#0F2C59] selection:text-white">
-      {/* Primary Sticky Header */}
-      <Header
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-        onOpenQuote={() => handleOpenQuote()}
-      />
-
-      {/* Main View Router */}
-      <main className="flex-1 w-full" id="main-content">
-        {currentPage === 'home' && (
-          <HomePage
-            onNavigate={handleNavigate}
-            onOpenQuote={() => handleOpenQuote()}
-            onOpenLightbox={(item) => setSelectedGalleryItem(item)}
-          />
-        )}
-
-        {currentPage === 'about' && (
-          <AboutPage
-            onNavigate={handleNavigate}
-            onOpenQuote={() => handleOpenQuote()}
-          />
-        )}
-
-        {currentPage === 'services' && (
-          <ServicesPage
-            onNavigate={handleNavigate}
-            onOpenQuote={(service) => handleOpenQuote(service)}
-          />
-        )}
-
-        {currentPage === 'why-us' && (
-          <WhyUsPage
-            onNavigate={handleNavigate}
-            onOpenQuote={() => handleOpenQuote()}
-          />
-        )}
-
-        {currentPage === 'gallery' && (
-          <GalleryPage
-            onNavigate={handleNavigate}
-            onOpenLightbox={(item) => setSelectedGalleryItem(item)}
-          />
-        )}
-
-        {currentPage === 'future-project' && (
-          <FutureProjectPage
-            onNavigate={handleNavigate}
-            onOpenQuote={() => handleOpenQuote()}
-          />
-        )}
-
-        {currentPage === 'contact' && <ContactPage />}
-      </main>
-
-      {/* Corporate Compact Footer */}
-      <Footer
-        onNavigate={handleNavigate}
-        onOpenQuote={() => handleOpenQuote()}
-        onOpenLegal={(type) => setLegalDocType(type)}
-      />
-
-      {/* Interactive Lightbox Viewer */}
-      <Lightbox
-        item={selectedGalleryItem}
-        items={GALLERY_ITEMS}
-        onClose={() => setSelectedGalleryItem(null)}
-        onSelect={(item) => setSelectedGalleryItem(item)}
-      />
-
-      {/* Interactive Quote / Appointment Dialog */}
-      <QuoteModal
-        isOpen={isQuoteOpen}
-        onClose={() => setIsQuoteOpen(false)}
-        preselectedService={preselectedService}
-      />
-
-      {/* Legal Documents Modal (Privacy Policy & Terms of Service) */}
-      <LegalModal
-        isOpen={legalDocType !== null}
-        type={legalDocType}
-        onClose={() => setLegalDocType(null)}
-        onSwitchType={(type) => setLegalDocType(type)}
-      />
-    </div>
+    <I18nProvider>
+      <RouterProvider>
+        <LazyMotion features={domAnimation}>
+          <MotionConfig reducedMotion="user">
+            <Shell />
+          </MotionConfig>
+        </LazyMotion>
+      </RouterProvider>
+    </I18nProvider>
   );
 }
