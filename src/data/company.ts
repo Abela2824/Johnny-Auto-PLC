@@ -62,7 +62,7 @@ export const SERVICES: Service[] = [
     short: 'Panels, frames and dents, from a scraped door to a full rebuild.',
     long: 'The core of the shop. Panel beating, chassis and frame straightening, door and wing replacement, bumper and quarter-panel rebuilding, and the structural checks that make a repaired car safe again.',
     points: ['Chassis and frame straightening', 'Panel beating and replacement', 'Doors, wings, bonnets, tailgates', 'Structural safety checks'],
-    image: '/images/johnny-auto3.jpg',
+    image: '/images/johnny-auto1.jpg',
     zone: 'Doors, wings, quarters',
   },
   {
@@ -171,7 +171,7 @@ export const GALLERY: GalleryItem[] = [
   { id: 'booth', src: '/images/johnny-auto28.jpg', alt: 'Nova Verta spray booth on the workshop floor', caption: 'Nova Verta downdraft booth', cat: 'Paint' },
   { id: 'booth-in', src: '/images/Nova-verta-room.jpg', alt: 'Inside the Nova Verta booth', caption: 'Inside the booth', cat: 'Paint', tall: true },
   { id: 'patrol-colour', src: '/images/johnny-auto24.jpg', alt: 'Nissan Patrol in fresh blue paint being masked', caption: 'Patrol, colour coat', cat: 'Paint' },
-  { id: 'patrol-primer', src: '/images/johnny-auto3.jpg', alt: 'Nissan Patrol in grey primer with wing removed', caption: 'Patrol, primer stage', cat: 'Body' },
+  { id: 'patrol-primer', src: '/images/johnny-auto1.jpg', alt: 'Nissan Patrol in grey primer with wing removed', caption: 'Patrol, primer stage', cat: 'Body' },
   { id: 'limo', src: '/images/johnny-auto40.jpg', alt: 'Stretched limousine in prep in front of the booth', caption: 'Limousine in prep', cat: 'Body' },
   { id: 'strip', src: '/images/johnny-auto44.jpg', alt: 'Cars stripped for body repair in the hall', caption: 'Stripped for repair', cat: 'Body' },
   { id: 'tanker', src: '/images/johnny-auto41.jpg', alt: 'Tanker trailer masked for paint', caption: 'Tanker trailer', cat: 'Commercial' },
@@ -182,7 +182,7 @@ export const GALLERY: GalleryItem[] = [
   { id: 'lift', src: '/images/johnny-auto17.jpg', alt: 'Range Rover on a lift', caption: 'On the lift', cat: 'Mechanical' },
   { id: 'van', src: '/images/johnny-auto46.jpg', alt: 'Johnny Auto service van', caption: 'Service van', cat: 'Facility' },
   { id: 'office', src: '/images/johnny-auto2.jpg', alt: 'Front office', caption: 'Front office', cat: 'Facility' },
-  { id: 'tow', src: '/images/johnny-auto1.jpg', alt: 'Johnny Auto tow truck', caption: 'Tow truck', cat: 'Facility' },
+  { id: 'tow', src: '/images/johnny-auto3.jpg', alt: 'Johnny Auto tow truck', caption: 'Tow truck', cat: 'Facility' },
   { id: 'fibre', src: '/images/fiberglass-repair.jpg', alt: 'Technician working in the booth', caption: 'In the booth', cat: 'Paint', tall: true },
 ];
 
@@ -191,7 +191,7 @@ export const COMPARE_PAIRS = [
     id: 'patrol',
     title: 'Nissan Patrol — primer to colour',
     note: 'Two stages of the same model from the current site. Replace with a true before/after set.',
-    before: { src: '/images/johnny-auto3.jpg', label: 'Primer' },
+    before: { src: '/images/johnny-auto1.jpg', label: 'Primer' },
     after: { src: '/images/johnny-auto24.jpg', label: 'Colour coat' },
   },
 ];

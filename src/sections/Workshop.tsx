@@ -44,7 +44,7 @@ export function Workshop() {
           </Reveal>
           <Reveal delay={0.1}>
             <figure className="duo duo-reveal aspect-[4/3] rounded-sm" tabIndex={0}>
-              <img src="/images/johnny-auto1.jpg" alt="Johnny Auto tow truck" loading="lazy" decoding="async" />
+              <img src="/images/johnny-auto3.jpg" alt="Johnny Auto tow truck" loading="lazy" decoding="async" />
               <figcaption className="absolute inset-x-0 bottom-0 z-10 p-4 bg-gradient-to-t from-ink to-transparent">
                 <span className="font-display font-extrabold wdth-75 text-3xl leading-none">Recovery</span>
                 <span className="block font-mono text-[11px] uppercase tracking-widest text-mist-2 mt-1">own tow truck · one ticket from roadside to handover</span>

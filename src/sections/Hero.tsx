@@ -11,7 +11,7 @@ import { telHref } from '../lib/format';
 import { usePrefersReducedMotion } from '../lib/hooks';
 
 export function Hero() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const ref = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
@@ -37,12 +37,15 @@ export function Hero() {
 
       <div className="wrap relative flex-1 flex flex-col justify-end pt-28 pb-10 lg:pt-36 lg:pb-16">
         <m.div style={{ opacity: fade }} className="lg:max-w-[46rem] relative z-10">
-          <span className="eyebrow">{t('hero.eyebrow')} · <span lang="am">{COMPANY.address.amharic}</span></span>
-          <h1 className="mt-5 font-display font-black wdth-75 text-[clamp(2.6rem,10.5vw,4.25rem)] lg:text-[5.4rem] leading-[0.94] tracking-tight">
+          <span className="eyebrow">
+            <span>{t('hero.eyebrow')}</span>
+            {lang === 'en' && <span lang="am" className="whitespace-nowrap opacity-80">{COMPANY.address.amharic}</span>}
+          </span>
+          <h1 className={`mt-5 font-display font-black wdth-75 tracking-tight ${lang === 'am' ? 'text-[clamp(2rem,8vw,3.2rem)] lg:text-[4rem] leading-[1.2]' : 'text-[clamp(2.6rem,10.5vw,4.25rem)] lg:text-[5.4rem] leading-[0.94]'}`}>
             <span className="block text-bone">{t('hero.title1')}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-volt-2 to-volt">{t('hero.title2')}</span>
           </h1>
-          <p className="mt-6 max-w-xl text-base sm:text-lg text-mist-2 leading-relaxed">{t('hero.lead')}</p>
+          <p className="mt-6 max-w-xl lg:max-w-md text-base sm:text-lg text-mist-2 leading-relaxed">{t('hero.lead')}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button to="/book" size="lg" arrow>{t('hero.cta.book')}</Button>
             <Button to="/track" size="lg" variant="outline">{t('hero.cta.track')}</Button>

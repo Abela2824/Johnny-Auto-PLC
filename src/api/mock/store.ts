@@ -40,9 +40,9 @@ function seedTickets(): Ticket[] {
       services: ['body', 'paint'], stage: 'paint', bay: 'P1', createdAt: ago(5 * D), promisedAt: ahead(2 * D),
       phoneMasked: mask(DEMO_PHONES.a), notify: { channel: 'telegram', on: true },
       events: [
-        { at: ago(5 * D), stage: 'intake', note: 'Front-left collision. Walk-around done, 14 photos taken, keys tagged.', photos: ['/images/johnny-auto3.jpg'], by: 'Front desk' },
+        { at: ago(5 * D), stage: 'intake', note: 'Front-left collision. Walk-around done, 14 photos taken, keys tagged.', photos: ['/images/johnny-auto1.jpg'], by: 'Front desk' },
         { at: ago(5 * D - 3 * H), stage: 'diagnosis', note: 'Wing, bumper and headlight to replace. Chassis measured: within tolerance. Estimate sent and approved.', by: 'Estimator' },
-        { at: ago(4 * D), stage: 'body', note: 'Wing replaced, bumper mount repaired, panel gaps set.', photos: ['/images/johnny-auto3.jpg'], by: 'Body shop' },
+        { at: ago(4 * D), stage: 'body', note: 'Wing replaced, bumper mount repaired, panel gaps set.', photos: ['/images/johnny-auto1.jpg'], by: 'Body shop' },
         { at: ago(1 * D), stage: 'paint', note: 'In the Nova Verta booth. Primer and colour coat applied; clear coat and bake scheduled.', photos: ['/images/johnny-auto24.jpg'], by: 'Paint shop' },
       ],
     },

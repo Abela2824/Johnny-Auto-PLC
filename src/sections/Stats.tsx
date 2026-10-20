@@ -48,7 +48,7 @@ export function Stats() {
   const values = { years, staff, area, customers: cust } as const;
 
   return (
-    <section className="bg-bone text-ink" aria-labelledby="stats-title">
+    <section id="stats" className="scroll-mt-20 bg-bone text-ink" aria-labelledby="stats-title">
       <div className="wrap py-16 lg:py-24">
         <span className="eyebrow !text-steel">{t('stats.eyebrow')}</span>
         <h2 id="stats-title" className="sr-only">Johnny Auto in numbers</h2>
