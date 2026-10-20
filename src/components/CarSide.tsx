@@ -57,12 +57,14 @@ const ZONES: Record<ServiceId, React.ReactNode> = {
   ),
 };
 
-export function CarSide({ mode = 'icon', active, onZone, className, title = 'Car silhouette' }: {
+export function CarSide({ mode = 'icon', active, onZone, className, title = 'Car silhouette', children }: {
   mode?: 'hero' | 'interactive' | 'icon';
   active?: ServiceId | null;
   onZone?: (id: ServiceId) => void;
   className?: string;
   title?: string;
+  /** Extra SVG content rendered inside the hero drawing (for example exhaust smoke). */
+  children?: React.ReactNode;
 }) {
   const stroke = 'currentColor';
   if (mode === 'icon') {
@@ -77,7 +79,7 @@ export function CarSide({ mode = 'icon', active, onZone, className, title = 'Car
 
   if (mode === 'hero') {
     return (
-      <svg viewBox="-20 30 860 270" className={cx('hero-car', className)} role="img" aria-label={title} style={{ ['--spray-x' as string]: '760px' }}>
+      <svg viewBox="-20 30 860 270" className={cx('hero-car overflow-visible', className)} role="img" aria-label={title} style={{ ['--spray-x' as string]: '760px' }}>
         <defs>
           <linearGradient id="paintGrad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#E2342D" />
@@ -115,8 +117,7 @@ export function CarSide({ mode = 'icon', active, onZone, className, title = 'Car
           <rect x="60" y="40" width="3" height="220" fill="#5CE1FF" />
           <rect x="40" y="40" width="40" height="220" fill="#5CE1FF" opacity=".12" />
         </g>
-        {/* the line continues */}
-        <line className="after" x1="752" y1="232" x2="1600" y2="232" stroke="#E2342D" strokeWidth="2" />
+        {children}
       </svg>
     );
   }

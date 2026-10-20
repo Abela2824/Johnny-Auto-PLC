@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { m, useScroll, useTransform } from 'motion/react';
+import { m, useScroll, useSpring, useTransform, useVelocity } from 'motion/react';
 import { ArrowDown, Phone } from 'lucide-react';
 import { useT } from '../i18n';
 import { Button } from '../components/ui';
@@ -10,14 +10,39 @@ import type { WorkshopStatus } from '../api/types';
 import { telHref } from '../lib/format';
 import { usePrefersReducedMotion } from '../lib/hooks';
 
+/** Exhaust and dust behind the rear wheel. Opacity follows scroll speed via --smoke. */
+function Smoke() {
+  return (
+    <g className="smoke" style={{ opacity: 'var(--smoke, .55)' }} aria-hidden>
+      <defs>
+        <filter id="smokeBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5" /></filter>
+      </defs>
+      <g filter="url(#smokeBlur)" fill="#F2EEE6">
+        <circle className="puff" cx="706" cy="262" r="11" />
+        <circle className="puff" cx="716" cy="270" r="14" />
+        <circle className="puff" cx="700" cy="256" r="9" />
+        <circle className="puff" cx="724" cy="264" r="16" />
+      </g>
+    </g>
+  );
+}
+
 export function Hero() {
   const { t, lang } = useT();
   const ref = useRef<HTMLElement>(null);
   const reduced = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const carX = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 220]);
+
+  // The car faces left and drives left: it enters from the right on load and
+  // leaves to the left as the hero scrolls away.
+  const carX = useTransform(scrollYProgress, [0, 1], ['0%', reduced ? '0%' : '-175%']);
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', reduced ? '0%' : '12%']);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // Smoke thickens with scroll speed.
+  const velocity = useVelocity(scrollYProgress);
+  const smokeRaw = useTransform(velocity, (v) => Math.min(1, 0.55 + Math.abs(v) * 0.9));
+  const smoke = useSpring(smokeRaw, { stiffness: 90, damping: 22 });
+
   const [status, setStatus] = useState<WorkshopStatus | null>(null);
 
   useEffect(() => {
@@ -53,10 +78,17 @@ export function Hero() {
           </div>
         </m.div>
 
-        {/* the car: draws itself, gets painted, then rolls along the line as you scroll */}
-        <m.div style={{ x: carX }} className="relative mt-8 -mx-4 sm:-mx-6 lg:mx-0 lg:absolute lg:right-[-6vw] lg:bottom-24 lg:w-[64vw] lg:max-w-[1040px] pointer-events-none">
-          <CarSide mode="hero" className="w-full h-auto" title="A car being drawn and painted" />
-        </m.div>
+        {/* the line and the car. The line stays; the car rolls along it. */}
+        <div className="relative mt-8 -mx-4 sm:-mx-6 lg:mx-0 lg:absolute lg:right-[-6vw] lg:bottom-24 lg:w-[64vw] lg:max-w-[1040px] pointer-events-none">
+          <div className="fade-late absolute right-0 left-[-100vw] h-px bg-red" style={{ top: '91.8%' }} aria-hidden />
+          <m.div style={{ x: carX, ['--smoke' as string]: smoke }}>
+            <m.div initial={{ x: '70%', opacity: 0 }} animate={{ x: '0%', opacity: 1 }} transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
+              <CarSide mode="hero" className="w-full h-auto" title="A car driving in from the right, being drawn and painted">
+                <Smoke />
+              </CarSide>
+            </m.div>
+          </m.div>
+        </div>
       </div>
 
       {/* workshop status strip (mock data) */}

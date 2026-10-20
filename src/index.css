@@ -96,6 +96,11 @@
 @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
 @keyframes spray { 0% { opacity: 0; transform: translateX(0); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(var(--spray-x, 800px)); } }
 @keyframes fadein { to { opacity: 1; } }
+@keyframes puff {
+  0% { opacity: 0; transform: translate(0, 0) scale(.45); }
+  15% { opacity: .6; }
+  100% { opacity: 0; transform: translate(130px, -38px) scale(2.3); }
+}
 @keyframes cell { to { opacity: 1; } }
 @keyframes blink { 50% { opacity: .25; } }
 
@@ -149,7 +154,12 @@
   .hero-car .stroke.d3 { animation-delay: .5s; }
   .hero-car .fill { clip-path: inset(0 100% 0 0); animation: wipe 1.3s 1.5s var(--ease-expo) forwards; }
   .hero-car .spray { opacity: 0; animation: spray 1.3s 1.5s var(--ease-expo) forwards; }
-  .hero-car .after { opacity: 0; animation: fadein .6s 2.6s forwards; }
+  .fade-late { opacity: 0; animation: fadein .6s 2.4s forwards; }
+  /* exhaust / dust puffs behind the rear wheel; the car drives left, so they trail right */
+  .hero-car .puff { transform-box: fill-box; transform-origin: center; animation: puff 1.5s ease-out infinite; }
+  .hero-car .puff:nth-child(2) { animation-delay: .38s; }
+  .hero-car .puff:nth-child(3) { animation-delay: .75s; }
+  .hero-car .puff:nth-child(4) { animation-delay: 1.12s; }
 
   /* Battery cells in the Future section */
   .ev-cells.is-on .cell { animation: cell .35s var(--ease-expo) forwards; }
@@ -175,8 +185,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .hero-car .stroke, .hero-car .fill, .hero-car .after { animation: none; stroke-dashoffset: 0; clip-path: none; opacity: 1; }
-    .hero-car .spray { display: none; }
+    .hero-car .stroke, .hero-car .fill, .fade-late { animation: none; stroke-dashoffset: 0; clip-path: none; opacity: 1; }
+    .hero-car .spray, .hero-car .smoke { display: none; }
     .ev-cells .cell { opacity: 1 !important; animation: none; }
     .blink { animation: none; }
   }

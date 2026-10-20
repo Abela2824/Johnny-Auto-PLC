@@ -196,23 +196,7 @@ export const COMPARE_PAIRS = [
   },
 ];
 
-export interface Note {
-  slug: string;
-  title: string;
-  titleAm?: string;
-  summary: string;
-  season: string;
-  outline: string[];
-}
-
-export const NOTES: Note[] = [
-  { slug: 'kiremt-ready', title: 'Getting your car ready for kiremt', titleAm: 'መኪናዎን ለክረምት ማዘጋጀት', summary: 'Wipers, tyres, brakes and the drains most people forget before the rains.', season: 'June – September', outline: ['Wiper blades and washer fluid', 'Tyre tread on wet cobbles', 'Brake check after dry season', 'Door and sunroof drains', 'What to do after driving through flood water'] },
-  { slug: 'dust-and-filters', title: 'Dust, air filters and Addis roads', summary: 'Why a filter that lasts 15,000 km elsewhere lasts 6,000 km here.', season: 'Bega (dry season)', outline: ['How dust gets past a clogged filter', 'Engine vs cabin filter', 'Intervals for unpaved commutes', 'Signs your filter is done'] },
-  { slug: 'paint-booth-explained', title: 'What a paint booth actually does to your car', summary: 'Downdraft air, baking cycles and why a garage-door respray never lasts.', season: 'Any time', outline: ['Why dust is the enemy', 'What “baked” means', 'Colour matching', 'How long a booth finish should last'] },
-  { slug: 'warning-lights', title: 'Reading your dashboard warning lights', summary: 'Which lights mean stop now, and which mean book a scan this week.', season: 'Any time', outline: ['Red vs amber', 'Check-engine light myths', 'ABS and airbag lights after a repair', 'What a diagnostic scan shows'] },
-  { slug: 'fibreglass-bumper', title: 'Why fibreglass is the right fix for a broken bumper', summary: 'Repair vs replace, and when a composite repair is stronger than the original.', season: 'Any time', outline: ['Plastic, fibreglass, and what your bumper is made of', 'When to repair', 'When to replace', 'Colour matching after repair'] },
-  { slug: 'ev-in-ethiopia', title: 'Electric cars in Ethiopia: what owners should know', summary: 'Charging, servicing and what changes when the engine is a battery.', season: 'Any time', outline: ['Charging at home in Addis', 'What an EV service involves', 'Body repair on EVs', 'Where Johnny Auto is heading'] },
-];
+// Workshop Notes live in ./notes.ts
 
 export const DAMAGE_ZONES: { id: string; name: string; side?: 'L' | 'R'; depts: ServiceId[] }[] = [
   { id: 'front-bumper', name: 'Front bumper', depts: ['fiberglass', 'paint'] },

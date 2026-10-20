@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from '../lib/router';
 import { useT } from '../i18n';
-import { NOTES } from '../data/company';
+import { NOTES } from '../data/notes';
 import { Placeholder, SectionHead } from '../components/ui';
 
 export function Notes() {
@@ -19,8 +19,11 @@ export function Notes() {
                   {lang === 'am' && n.titleAm ? n.titleAm : n.title}
                 </h3>
                 <p className="mt-2 text-sm text-mist-2">{n.summary}</p>
-                <span className="mt-5 flex items-center justify-between">
-                  <Placeholder label={t('notes.draft')} />
+                <span className="mt-5 flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-3">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-mist">{n.readMinutes} min</span>
+                    <Placeholder label={t('notes.draft')} />
+                  </span>
                   <ArrowUpRight className="w-4 h-4 text-mist group-hover:text-bone" aria-hidden />
                 </span>
               </Link>

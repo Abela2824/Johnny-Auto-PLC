@@ -103,7 +103,7 @@ export const en = {
 
   'notes.eyebrow': 'Workshop notes',
   'notes.title': 'Advice for Addis drivers.',
-  'notes.draft': 'Draft — to write',
+  'notes.draft': 'Draft — to review',
   'notes.read': 'Read',
 
   'partners.eyebrow': 'Equipment and materials',

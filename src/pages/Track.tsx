@@ -19,7 +19,7 @@ function Pipeline({ stage }: { stage: Ticket['stage'] }) {
     <div className="relative mt-2">
       <div className="h-px bg-white/15 absolute left-0 right-0 top-[5px]" />
       <div className="h-px bg-red absolute left-0 top-[5px]" style={{ width: `${pct}%` }} />
-      <div className="absolute -top-7 text-red-3 transition-[left] duration-700" style={{ left: `calc(${pct}% - 20px)` }} aria-hidden><CarSide mode="icon" className="w-10" /></div>
+      <div className="absolute -top-7 text-red-3 transition-[left] duration-700" style={{ left: `calc(${pct}% - 20px)` }} aria-hidden><CarSide mode="icon" className="w-10 -scale-x-100" /></div>
       <ol className="relative grid grid-cols-6">
         {STAGES.map((s, i) => (
           <li key={s.id} className={cx('flex flex-col', i === 0 ? 'items-start' : i === STAGES.length - 1 ? 'items-end' : 'items-center')} aria-current={i === cur ? 'step' : undefined}>

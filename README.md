@@ -35,7 +35,7 @@ No environment variables and no API keys are needed.
 | `/track` | Live repair tracker by ticket number or phone (demo: `JA-24117`, `JA-24102`, `JA-24121`, `0900000001`) |
 | `/admin` | Staff preview: bookings inbox, estimator queue, six-stage pipeline board with "Advance", bay grid |
 | `/fleet` | Fleet portal demo account with vehicles, statuses and statements |
-| `/notes`, `/notes/:slug` | Workshop Notes (replaces the borrowed blog) with placeholder articles |
+| `/notes`, `/notes/:slug` | Workshop Notes (replaces the borrowed blog): six draft articles for Addis drivers in `src/data/notes.ts`, marked for the workshop manager to review |
 
 The loop is wired end to end on mock data: make a booking or a quote on the public pages and it appears in `/admin`; advance a ticket on the board and `/track` shows the new station.
 
@@ -72,7 +72,7 @@ PITCH.md                   the five-line pitch
 - **Type**: Archivo (variable width: condensed headlines, expanded labels), JetBrains Mono for ticket numbers and readouts, Noto Sans Ethiopic for Amharic. Loaded from Google Fonts with `display=swap`.
 - **Colour**: Ink `#0A0C10`, Bone `#F2EEE6`, Signal Red `#E2342D`, Volt Blue `#2F6BFF → #5CE1FF`.
 - **Photos**: the client's existing photos are used with a duotone + grain treatment so lower-quality images still read as premium; hover or focus reveals the original colour.
-- **Hero**: the car silhouette draws itself, a sweep paints it, and the line continues off the right edge; scrolling rolls the car along it. With `prefers-reduced-motion` the final state is shown immediately.
+- **Hero**: the car silhouette drives in from the right while it draws itself, a sweep paints it, and the line runs under its wheels across the page. Scrolling drives the car off to the left with exhaust smoke that thickens with scroll speed. With `prefers-reduced-motion` the final state is shown immediately and the car stays put.
 - **Performance**: no hero video; the home page ships about 135 KB of gzipped JavaScript and 10 KB of CSS; the tools load on demand; images are lazy; the map loads only on request.
 - **Accessibility**: semantic landmarks, skip link, keyboard-operable car zones and compare slider, visible focus, labelled form fields, `aria-current` on process steps.
 - **Honesty**: anything not verifiable on the current site is rendered with the `Placeholder` component as `[… — TO CONFIRM]` (founding year, 500k customers, working hours, Telegram handle, boat photos, turnaround times).

@@ -79,7 +79,8 @@ function Desktop() {
             </button>
           ))}
           <m.div className="absolute -top-9 text-red-3" style={{ left, x: '-50%' }} aria-hidden>
-            <CarSide mode="icon" className="w-16 h-auto" />
+            {/* the silhouette faces left; flip it so it faces the direction of travel */}
+            <CarSide mode="icon" className="w-16 h-auto -scale-x-100" />
           </m.div>
         </div>
         <div className="mt-24 max-w-3xl">
