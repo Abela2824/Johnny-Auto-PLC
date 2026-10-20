@@ -58,6 +58,8 @@
   input, select, textarea { font: inherit; color: inherit; }
   input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .7; }
   [hidden] { display: none !important; }
+  /* Single-column grids on phones must not grow to an image's intrinsic width. */
+  .grid { grid-auto-columns: minmax(0, 1fr); }
 }
 
 /* Width axis of Archivo: condensed headlines, expanded labels. */

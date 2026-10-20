@@ -16,7 +16,7 @@ export function Services() {
       <div className="wrap py-20 lg:py-28">
         <SectionHead id="services-title" eyebrow={t('services.eyebrow')} title={t('services.title')} />
 
-        <div className="mt-12 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs uppercase tracking-widest text-mist mb-4">{t('services.hint')}</p>
             <div className="relative">

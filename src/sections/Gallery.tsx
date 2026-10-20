@@ -57,7 +57,7 @@ export function Gallery() {
   return (
     <section id="gallery" className="scroll-mt-20 bg-ink-2 border-y border-white/10" aria-labelledby="gallery-title">
       <div className="wrap py-20 lg:py-28">
-        <div className="grid lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-5">
             <SectionHead id="gallery-title" eyebrow={t('gallery.eyebrow')} title={t('gallery.title')} />
             <p className="mt-5 text-mist-2 max-w-md">Every job gets photos at intake, after metalwork, out of the booth, and at handover. In production the technicians’ photos feed this page directly.</p>

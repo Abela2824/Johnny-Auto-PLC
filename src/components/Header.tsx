@@ -69,7 +69,8 @@ export function Header({ transparent }: { transparent: boolean }) {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="lg:hidden fixed inset-x-0 top-16 bottom-0 bg-ink border-t border-white/10 overflow-y-auto">
+        /* absolute, not fixed: the blurred header is this panel's containing block */
+        <div id="mobile-menu" className="lg:hidden absolute inset-x-0 top-full h-[calc(100svh-4rem)] bg-ink border-t border-white/10 overflow-y-auto">
           <nav className="wrap py-6 flex flex-col" aria-label="Mobile">
             {NAV.map((n) => (
               <Link key={n.key} to={n.to} className="py-3.5 border-b border-white/10 font-display font-bold wdth-87 text-2xl text-bone">

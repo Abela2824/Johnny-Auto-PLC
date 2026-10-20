@@ -12,7 +12,7 @@ export function Workshop() {
   return (
     <section id="workshop" className="scroll-mt-20 bg-ink" aria-labelledby="workshop-title">
       <div className="wrap py-20 lg:py-28">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-end">
           <Reveal className="lg:col-span-7">
             <figure className="duo duo-reveal aspect-[4/3] rounded-sm" tabIndex={0}>
               <img src="/images/johnny-auto28.jpg" alt="Nova Verta spray booth on the Megenagna workshop floor" loading="lazy" decoding="async" width={1080} height={720} />
@@ -32,7 +32,7 @@ export function Workshop() {
           </div>
         </div>
 
-        <div className="mt-10 grid sm:grid-cols-3 gap-4">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Reveal delay={0.05}>
             <figure className="duo duo-reveal duo-blue aspect-[4/3] rounded-sm" tabIndex={0}>
               <img src="/images/johnny-auto6.jpg" alt="Johnny Auto team in front of the workshop, May 2020" loading="lazy" decoding="async" />

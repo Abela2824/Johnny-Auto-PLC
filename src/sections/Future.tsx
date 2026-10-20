@@ -63,7 +63,7 @@ export function Future() {
   return (
     <section id="future" className="scroll-mt-20 bg-[#06091A] text-bone border-y border-volt/20" style={{ ['--accent' as string]: 'var(--color-volt-2)', ['--accent-2' as string]: 'var(--color-volt-2)' }} aria-labelledby="future-title">
       <div className="wrap py-24 lg:py-32">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6">
             <span className="eyebrow">{t('future.eyebrow')} · <span className="text-volt-2">{t('future.status')}</span></span>
             <h2 id="future-title" className="mt-5 font-display font-black wdth-62 text-[clamp(3.5rem,14vw,6rem)] lg:text-[7.5rem] leading-[0.85] tracking-tight">
